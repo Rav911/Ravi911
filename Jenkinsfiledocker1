@@ -11,7 +11,6 @@ pipeline
     {
         stage('Git Checkout')
         {
-
           steps()
            {
              git branch: 'Devops', url: 'https://github.com/Rav911/Ravi911.git'
@@ -22,9 +21,8 @@ pipeline
         {
             Steps()
             {
-                sh 'mvn clean package'
+             sh 'mvn clean package'
             }
         }
     }
-
 }
