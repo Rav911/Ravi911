@@ -45,7 +45,7 @@ pipeline
                 {
                     sh 'docker login -u ravi0911 -p ${Docker_Hub_Password}'
                 }
-                sh 'docker push ravi0911/local-image:${buildNumber}
+                sh 'docker push ravi0911/local-image:${buildNumber}'
             }
         }
     }
