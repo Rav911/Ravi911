@@ -7,6 +7,10 @@ pipeline
         maven 'Maven_3.9.9'
     }
 
+    environment
+    {
+        buildNumber = "${BUILD_NUMBER}"
+    }
     stages
     {
         stage('Git Checkout')
@@ -22,6 +26,26 @@ pipeline
             steps()
             {
              sh 'mvn clean package'
+            }
+        }
+
+        stage('Build Docker Image')
+        {
+            step()
+            {
+                sh 'docker build -t ravi0911/local-image:${buildNumber} .'
+            }
+        }
+
+        stage('Authenticate and Push Docker Image to Docker Hub Registry')
+        {
+            step()
+            {
+                withCredentials([string(credentialsId: 'Docker_Hub_Password', variable: 'Docker_Hub_Password')])
+                {
+                    sh 'docker login -u ravi0911 -p ${Docker_Hub_Password}'
+                }
+                sh 'docker push ravi0911/local-image:${buildNumber}
             }
         }
     }
