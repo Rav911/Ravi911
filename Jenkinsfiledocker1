@@ -14,7 +14,7 @@ pipeline
 
           steps()
            {
-             git branch: 'Devops', url:https://github.com/Rav911/Ravi911.git
+             git branch: 'Devops', url: 'https://github.com/Rav911/Ravi911.git'
            }        
         }
 
