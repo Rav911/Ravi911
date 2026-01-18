@@ -1,40 +1,52 @@
-pipeline {
+pipeline
+{
     agent any
 
-    tools {
+    tools
+    {
         maven 'Maven_3.9.9'
     }
 
-    stages {
+    environment
+    {
+        buildNumber = "${BUILD_NUMBER}"
+    }
+    
+    stages
+    {
+        stage('Git Checkout')
+        {
+          steps()
+           {
+             git branch: 'Devops', url: 'https://github.com/Rav911/Ravi911.git'
+           }        
+        }
 
-        stage('Git Checkout') {
-            steps {
-                git branch: 'Devops', url: 'https://github.com/Rav911/Ravi911.git'
+        stage('Build Project')
+        {
+            steps()
+            {
+             sh 'mvn clean package'
             }
         }
 
-        stage('Build Project') {
-            steps {
-                sh 'mvn clean package'
+        stage('Build Docker Image')
+        {
+            step()
+            {
+                sh 'docker build -t ravi0911/local-image:${buildNumber} .'
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                sh """
-                docker build -t ravi911/local-image:${BUILD_NUMBER} .
-                """
-            }
-        }
-
-        stage('Authenticate and Push Docker Image to Docker Hub Registry') {
-            steps {
-                withCredentials([string(credentialsId: 'Docker_Hub_Password', variable: 'DOCKER_PASS')]) {
-                    sh """
-                    echo "$DOCKER_PASS" | docker login -u ravi911 --password-stdin
-                    docker push ravi911/local-image:${BUILD_NUMBER}
-                    """
+        stage('Authenticate and Push Docker Image to Docker Hub Registry')
+        {
+            step()
+            {
+                withCredentials([string(credentialsId: 'Docker_Hub_Password', variable: 'Docker_Hub_Password')])
+                {
+                    sh 'docker login -u ravi0911 -p ${Docker_Hub_Password}'
                 }
+                sh 'docker push ravi0911/local-image:${buildNumber}'
             }
         }
     }
