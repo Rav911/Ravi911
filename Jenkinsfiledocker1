@@ -11,7 +11,7 @@ pipeline
     {
         buildNumber = "${BUILD_NUMBER}"
     }
-    
+
     stages
     {
         stage('Git Checkout')
@@ -32,7 +32,7 @@ pipeline
 
         stage('Build Docker Image')
         {
-            step()
+            steps()
             {
                 sh 'docker build -t ravi0911/local-image:${buildNumber} .'
             }
@@ -40,7 +40,7 @@ pipeline
 
         stage('Authenticate and Push Docker Image to Docker Hub Registry')
         {
-            step()
+            steps()
             {
                 withCredentials([string(credentialsId: 'Docker_Hub_Password', variable: 'Docker_Hub_Password')])
                 {
